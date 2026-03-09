@@ -1,8 +1,14 @@
 plugins {
-    kotlin("jvm") version "2.3.0"
+    kotlin("jvm") version "2.0.21"
+    application
+    id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
-group = "com.vainius.particles-yay"
+kotlin {
+    jvmToolchain(25)
+}
+
+group = "vainius.particles-yay"
 version = "1.0.0"
 
 repositories {
@@ -13,8 +19,13 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
-kotlin {
-    jvmToolchain(25)
+javafx {
+    version = "21.0.5"
+    modules = listOf("javafx.controls", "javafx.graphics")
+}
+
+application {
+    mainClass.set("com.example.MainKt")
 }
 
 tasks.test {
