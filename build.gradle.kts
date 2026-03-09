@@ -1,11 +1,23 @@
+import org.gradle.api.tasks.compile.JavaCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.1.21"
     application
     id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 kotlin {
-    jvmToolchain(25)
+    jvmToolchain(21)
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_21)
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
 }
 
 group = "vainius.particles-yay"
@@ -25,9 +37,14 @@ javafx {
 }
 
 application {
-    mainClass.set("com.example.MainKt")
+    mainClass.set("com.vainius.particlesyay.MainKt")
+    applicationDefaultJvmArgs = listOf("--enable-native-access=ALL-UNNAMED")
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(21)
 }
