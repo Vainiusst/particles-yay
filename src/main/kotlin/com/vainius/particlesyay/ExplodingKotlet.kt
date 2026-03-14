@@ -27,13 +27,12 @@ class ExplodingKotlet : Application() {
         val root = StackPane(canvas)
         stage.title = "Exploding Kotlet"
         stage.scene = Scene(root)
-
         var particle = Particle(x, y, dotSize)
 
         canvas.setOnMouseClicked {
             if (!movementStarted) {
                 movementStarted = true
-                startTimer(canvas, gc, particle)
+                startTimer(gc, particle)
             } else {
                 resetState()
                 particle = Particle(x, y, dotSize)
@@ -45,30 +44,7 @@ class ExplodingKotlet : Application() {
         setTheStage(gc, particle)
     }
 
-    private fun resetState() {
-        movementStarted = false
-        timer?.stop()
-        timer = null
-        clearCanvas()
-    }
-
-    private fun clearCanvas() {
-        gc.clearRect(0.0, 0.0, canvas.width, canvas.height)
-    }
-
-    private fun setTheStage(gc: GraphicsContext, particle: Particle) {
-        particle.draw(gc)
-        gc.fill = Color.BLACK
-        gc.font = Font.font(16.0)
-        gc.fillText(
-            "Click your mouse to get the dot moving",
-            20.0, canvasHeight - 20.0
-        )
-    }
-
-    private fun startTimer(
-        canvas: Canvas, gc: GraphicsContext, particle: Particle
-    ) {
+    private fun startTimer(gc: GraphicsContext, particle: Particle) {
         var lastNanos = 0L
         timer = object : AnimationTimer() {
             override fun handle(now: Long) {
@@ -87,5 +63,26 @@ class ExplodingKotlet : Application() {
             }
         }
         timer?.start()
+    }
+
+    private fun clearCanvas() {
+        gc.clearRect(0.0, 0.0, canvas.width, canvas.height)
+    }
+
+    private fun resetState() {
+        movementStarted = false
+        timer?.stop()
+        timer = null
+        clearCanvas()
+    }
+
+    private fun setTheStage(gc: GraphicsContext, particle: Particle) {
+        particle.draw(gc)
+        gc.fill = Color.BLACK
+        gc.font = Font.font(16.0)
+        gc.fillText(
+            "Click your mouse to get the dot moving",
+            20.0, canvasHeight - 20.0
+        )
     }
 }
