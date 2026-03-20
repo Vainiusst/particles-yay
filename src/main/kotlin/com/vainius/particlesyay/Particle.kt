@@ -21,13 +21,10 @@ class Particle(
     }
 
     fun move(deltaTime: Double, canvasWidth: Double, canvasHeight: Double) {
-        yVelocity += gravity * deltaTime
         if (dotIsAtTheBottom(canvasHeight)) {
             lowerXVelocity(deltaTime)
         }
-        if (xVelocity == 0.0) {
-            yVelocity = 0.0
-        }
+        lowerYVelocity(deltaTime)
         x += xVelocity * deltaTime
         y += yVelocity * deltaTime
         changeDirIfWallIsHit(canvasWidth, canvasHeight)
@@ -45,21 +42,30 @@ class Particle(
         }
     }
 
+    fun lowerYVelocity(deltaTime: Double) {
+        if (xVelocity == 0.0) {
+            yVelocity = 0.0
+        } else {
+            yVelocity += gravity * deltaTime
+        }
+    }
+
     private fun changeDirIfWallIsHit(canvasWidth: Double, canvasHeight: Double) {
+        val hitWallVelocityMultiplier = 0.7
         if (x <= 0.0) {
             x = 0.0
-            xVelocity = -xVelocity * 0.7
+            xVelocity = -xVelocity * hitWallVelocityMultiplier
         } else if (x + width >= canvasWidth) {
             x = canvasWidth - width
-            xVelocity = -xVelocity * 0.7
+            xVelocity = -xVelocity * hitWallVelocityMultiplier
         }
 
         if (y <= 0.0) {
             y = 0.0
-            yVelocity = -yVelocity * 0.7
+            yVelocity = -yVelocity * hitWallVelocityMultiplier
         } else if (y + width >= canvasHeight) {
             y = canvasHeight - width
-            yVelocity = -yVelocity * 0.7
+            yVelocity = -yVelocity * hitWallVelocityMultiplier
         }
     }
 }
